@@ -7,7 +7,7 @@
 
 | 路徑 | 用途 |
 |---|---|
-| `public/index.html` | 測驗本體（題目、顏色結果文字、商品連結都在檔案裡的設定區） |
+| `public/index.html` | 測驗本體（題目、顏色結果文字都在檔案裡的設定區） |
 | `functions/api/claim.js` | 收 Email、存進 D1、回傳優惠碼 |
 | `wrangler.toml` | Pages 設定：D1 綁定（DB → game）、優惠碼 `COUPON_CODE` |
 
