@@ -148,10 +148,6 @@
   }
   var panes={start:$('.nyt-start'),ask:$('.nyt-ask'),res:$('.nyt-res')};
   var qi=0, sc={}, last=null;
-  var store={
-    get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
-    set:function(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-  };
   function show(k){ for(var p in panes){ panes[p].classList.toggle('on',p===k); } window.scrollTo(0,0); }
   function ask(){
     var q=D.q[qi];
@@ -198,7 +194,8 @@
 
   /* ===== 領券：email 存到 D1（/api/claim），回傳優惠碼 ===== */
   var SRC=(new URLSearchParams(location.search).get('src')||'').slice(0,60);
-  var claimed=store.get('niyan_color_claim');
+  /* 不記在瀏覽器：每次打開都要先留 Email 才看得到優惠碼（同一次再玩不用重填） */
+  var claimed=null;
   var form=$('.nyt-form'), got=$('.nyt-got'), err=$('.nyt-err'), submit=$('.nyt-submit');
   $('.nyt-shop').href=SHOP;
   $('.nyt-join').href=JOIN;
@@ -222,7 +219,7 @@
     }).then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
       .then(function(res){
         if(!res.ok||!res.d.ok) throw new Error(res.d.error||'');
-        claimed={code:res.d.code}; store.set('niyan_color_claim',claimed);
+        claimed={code:res.d.code};
         renderClaim(!res.d.isNew);
       })
       .catch(function(x){ err.textContent=x.message||'網路好像不太穩，請再試一次'; })
